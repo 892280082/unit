@@ -1,0 +1,163 @@
+#!/bin/bash
+#扩展方法－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+#扩展方法时在拦截器［Dispather］配置方法名a，然后写方法a即可,记住方法一定要在Dispather $*这句之前。
+#echo "配置方法:#@ [ssh] [address] [userName]"
+#result=$(loadConf $1)
+#result=$(showConfInfo "$result")
+#echo "$result"
+#paramLine=$(getCountParam "$result")
+#param=$(getAvailable "$paramLine")
+#parray=("null1" "null2" "null3" "null4" "null5" "null6" "null7" "null8")
+#parmIndex=0
+#for line in $param
+#do
+#parray[$parmIndex]=$line
+#((parmIndex+=1))
+#done
+#以上代码可以在每个扩展方法中使用,parray即为参数数组${parray[0]} 使用参数
+#执行的脚本需要指定执行 文件路径 例/usr/bin/ssh ${parray[1]}@${parray[0]}
+#配置文件－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+#@ssh 1.地址  2.用户名 3.简介
+#ssh  114.215.189.245  root  阿里云服务器
+#ssh  12234  root5  测试1
+#ssh  12sdf  root2  测试2
+#ssh  12sdf  root66  测试3
+#全局变量－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+#配置错误提示
+ERROR="[ERROR]:"
+#配置配置文件路径
+SYSTEM_FILE_PATH="/usr/local/unit/unit.conf"
+#读取配置文件
+   
+function loadConf(){
+	if [ -f $SYSTEM_FILE_PATH ]
+		then
+			funInfo=`cat $SYSTEM_FILE_PATH | grep -i ^#@$1`
+			echo "$funInfo"
+   			arryConfig=`cat $SYSTEM_FILE_PATH | grep -i ^$1`
+   			echo "$arryConfig"
+		else
+   			echo "unit.conf is not exit!"
+	fi
+}
+
+#显示配置信息 返回指定条数的信息
+function showConfInfo(){
+	index=0;
+	echo "$1" | while read line
+    do
+    	if [ $index == 0 ]
+		then
+   			echo "$line"
+		else
+   			echo "($index) $line"
+		fi
+        index=`expr $index + 1`
+    done
+    return 0
+}
+#返回指定条数的信息
+function getCountParam(){
+    read  number
+    index=0
+    while read line
+    do
+      if [ $index == 0 ]
+        then
+        ((index +=1))
+        continue;
+      fi
+      if [ $index == $number ]
+        then
+           echo $line
+           break;
+      fi
+      ((index +=1))
+    done <<< "$*"
+}
+#返回指定条数里的可用参数
+function getAvailable()
+{
+    index=0
+    for line in $*
+    do
+      if [ $index -gt 1 ]
+        then
+            echo $line
+      fi
+      ((index +=1))
+    done
+}
+#选择器
+function Dispather()
+{	
+ case $1 in 
+        init) 
+            init $*
+         ;; 
+         ssh) 
+          	ssh $*
+         ;; 
+         rssh) 
+            rssh $*
+         ;; 
+          mem) 
+            mem $*
+         ;; 
+         stop) 
+           echo "stop something" 
+         ;; 
+        --list) 
+           echo -e "参数  方法作用\n"
+           echo -e "ssh  ssh连接工具\n"
+           echo -e "rssh  SSH反向代理\n"
+         ;; 
+         *) 
+           echo "Ignorant" 
+         ;; 
+ esac 
+}
+#方法区
+function ssh(){
+  echo "配置方法:#@ [ssh] [address] [userName]"
+  result=$(loadConf $1)
+  result=$(showConfInfo "$result")
+  echo "$result"
+  paramLine=$(getCountParam "$result")
+  param=$(getAvailable "$paramLine")
+  parray=("null1" "null2" "null3" "null4" "null5" "null6" "null7" "null8")
+  parmIndex=0
+  for line in $param
+  do
+    parray[$parmIndex]=$line
+    ((parmIndex+=1))
+  done
+  `which ssh` ${parray[1]}@${parray[0]}
+}
+function rssh(){
+  echo "配置方法：#@rssh  1.地址  2.远程端口  3.本地地址 4.本地端口"
+  result=$(loadConf $1)
+  result=$(showConfInfo "$result")
+  echo "$result"
+  paramLine=$(getCountParam "$result")
+  param=$(getAvailable "$paramLine")
+  parray=("null1" "null2" "null3" "null4" "null5" "null6" "null7" "null8")
+  parmIndex=0
+  for line in $param
+  do
+    parray[$parmIndex]=$line
+    ((parmIndex+=1))
+  done
+  sudo  `which ssh` ${parray[0]} -R ${parray[1]}:${parray[2]}:${parray[3]}
+}
+function mem(){
+  /usr/local/memcached-1.4.17/bin/memcached -d -m 256 -u root -p 11211 -c 1024 –P /tmp/memcached.pid
+  echo "memcached启动成功"
+}
+function init(){
+  svnserve -d --listen-port 3690 -r /opt/svn/svns
+  /usr/local/memcached/bin/memcached -d -m 256 -u root -p 11211 -c 1024 –P /tmp/memcached.pid
+}
+#主方法
+Dispather $*
+

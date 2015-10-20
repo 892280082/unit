@@ -1,0 +1,4 @@
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23c0c9c3118221f8&redirect_uri=http%3A%2F%2Ftest.imaiji.com%2Fyq%2FtoMaijiPort.action&response_type=code&scope=snsapi_base&state=123#wechat_redirect
+
+
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23c0c9c3118221f8&redirect_uri=http%3A%2F%2Ftest.imaiji.com%2Fyhl%2FtoMeLogin.action&response_type=code&scope=snsapi_base&state=123#wechat_redirect
