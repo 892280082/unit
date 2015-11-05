@@ -26,32 +26,32 @@
 #配置错误提示
 ERROR="[ERROR]:"
 #配置配置文件路径
-SYSTEM_FILE_PATH="/usr/local/unit/unit.conf"
+SYSTEM_FILE_PATH="/usr/local/gitResponse/unit/unit.conf"
 #读取配置文件
    
 function loadConf(){
-	if [ -f $SYSTEM_FILE_PATH ]
-		then
-			funInfo=`cat $SYSTEM_FILE_PATH | grep -i ^#@$1`
-			echo "$funInfo"
-   			arryConfig=`cat $SYSTEM_FILE_PATH | grep -i ^$1`
-   			echo "$arryConfig"
-		else
-   			echo "unit.conf is not exit!"
-	fi
+  if [ -f $SYSTEM_FILE_PATH ]
+    then
+      funInfo=`cat $SYSTEM_FILE_PATH | grep -i ^#@$1`
+      echo "$funInfo"
+        arryConfig=`cat $SYSTEM_FILE_PATH | grep -i ^$1`
+        echo "$arryConfig"
+    else
+        echo "unit.conf is not exit!"
+  fi
 }
 
 #显示配置信息 返回指定条数的信息
 function showConfInfo(){
-	index=0;
-	echo "$1" | while read line
+  index=0;
+  echo "$1" | while read line
     do
-    	if [ $index == 0 ]
-		then
-   			echo "$line"
-		else
-   			echo "($index) $line"
-		fi
+      if [ $index == 0 ]
+    then
+        echo "$line"
+    else
+        echo "($index) $line"
+    fi
         index=`expr $index + 1`
     done
     return 0
@@ -90,16 +90,19 @@ function getAvailable()
 }
 #选择器
 function Dispather()
-{	
+{ 
  case $1 in 
          ssh) 
-          	ssh $*
+            ssh $*
          ;; 
          rssh) 
             rssh $*
          ;; 
           mem) 
             mem $*
+         ;; 
+         addbin) 
+            addbin $*
          ;; 
          stop) 
            echo "stop something" 
@@ -150,6 +153,12 @@ function mem(){
   /usr/local/memcached-1.4.17/bin/memcached -d -m 256 -u root -p 11211 -c 1024 –P /tmp/memcached.pid
   echo "memcached启动成功"
 }
+function addbin(){
+   filepath=$(cd "$(dirname "$0")"; pwd)
+   sudo ln -s  "$filepath/unit"  /usr/bin/
+   echo "add success"
+}
+
 #主方法
 Dispather $*
 
