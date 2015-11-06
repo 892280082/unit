@@ -26,18 +26,19 @@
 #配置错误提示
 ERROR="[ERROR]:"
 #配置配置文件路径
-SYSTEM_FILE_PATH="/usr/local/gitResponse/unit/unit.conf"
+UNIT_CONF='/usr/local/gitRepository/unit/unit.conf'
+UNIT_LOG='/usr/local/gitRepository/unit/unit.log'
 #读取配置文件
    
 function loadConf(){
-  if [ -f $SYSTEM_FILE_PATH ]
+  if [ -f $UNIT_CONF ]
     then
-      funInfo=`cat $SYSTEM_FILE_PATH | grep -i ^#@$1`
+      funInfo=`cat $UNIT_CONF | grep -i ^#@$1`
       echo "$funInfo"
-        arryConfig=`cat $SYSTEM_FILE_PATH | grep -i ^$1`
+        arryConfig=`cat $UNIT_CONF | grep -i ^$1`
         echo "$arryConfig"
     else
-        echo "unit.conf is not exit!"
+        echo "unit.conf is not exit! go to exits dir and use unit initMac or initLinux!"
   fi
 }
 
@@ -92,6 +93,9 @@ function getAvailable()
 function Dispather()
 { 
  case $1 in 
+         initMac) 
+            initMac $*
+         ;; 
          ssh) 
             ssh $*
          ;; 
@@ -101,18 +105,26 @@ function Dispather()
           mem) 
             mem $*
          ;; 
-         addbin) 
-            addbin $*
+         mongo) 
+           mongo $*
+         ;; 
+         log) 
+           log $*
          ;; 
          stop) 
            echo "stop something" 
          ;; 
         --list) 
-           echo -e "参数  方法作用\n"
-           echo -e "ssh  ssh连接工具\n"
+           echo -e "参数------------------- 方法作用\n"
+           echo -e "initMac--------------- mac客户端初始化"
+           echo -e "ssh------------------- ssh连接工具"
+           echo -e "rssh------------------ ssh反向代理工具"
+           echo -e "mem------------------- 启动memcached"
+           echo -e "mongo----------------- 启动mongoService"
+           echo -e "log------------------- 查看日志"
          ;; 
          *) 
-           echo "Ignorant" 
+           echo "param error! play use --list" 
          ;; 
  esac 
 }
@@ -153,12 +165,25 @@ function mem(){
   /usr/local/memcached-1.4.17/bin/memcached -d -m 256 -u root -p 11211 -c 1024 –P /tmp/memcached.pid
   echo "memcached启动成功"
 }
-function addbin(){
-   filepath=$(cd "$(dirname "$0")"; pwd)
-   sudo ln -s  "$filepath/unit"  /usr/bin/
-   echo "add success"
+function initMac(){
+  #获得路径 拼接文件路径
+  filepath=$(cd "$(dirname "$0")"; pwd)
+  UNIT_LOG="'$filepath/unit.log'"
+  UNIT_CONF="'$filepath/unit.conf'"
+  #替换环境变量
+  sed -i '' "25,32s:UNIT_LOG='':UNIT_LOG="$UNIT_LOG":g" "$filepath/unit"
+  sed -i '' "25,32s:UNIT_CONF='':UNIT_CONF="$UNIT_CONF":g" "$filepath/unit"
+  sudo rm /usr/bin/unit > /dev/null 
+  sudo ln -s  "$filepath/unit"  /usr/bin/
+  echo "init success"
 }
-
+function mongo(){
+  sudo  /usr/local/mongodb/mongodir/bin/mongod >> "$UNIT_LOG" &
+  echo "mongodb 启动成功！"
+}
+function log(){
+  tail -f "$UNIT_LOG"
+}
 #主方法
 Dispather $*
 

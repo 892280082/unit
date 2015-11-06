@@ -1,0 +1,33 @@
+/usr/local/mongodb/mongodir/bin/mongod --help for help and startup options
+Fri Nov  6 23:12:32.050 [initandlisten] MongoDB starting : pid=10523 port=27017 dbpath=/data/db/ 64-bit host=appledeMacBook-Pro.local
+Fri Nov  6 23:12:32.051 [initandlisten] 
+Fri Nov  6 23:12:32.051 [initandlisten] ** WARNING: soft rlimits too low. Number of files is 256, should be at least 1000
+Fri Nov  6 23:12:32.051 [initandlisten] db version v2.4.6
+Fri Nov  6 23:12:32.051 [initandlisten] git version: b9925db5eac369d77a3a5f5d98a145eaaacd9673
+Fri Nov  6 23:12:32.051 [initandlisten] build info: Darwin bs-osx-106-x86-64-2.10gen.cc 10.8.0 Darwin Kernel Version 10.8.0: Tue Jun  7 16:32:41 PDT 2011; root:xnu-1504.15.3~1/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
+Fri Nov  6 23:12:32.051 [initandlisten] allocator: system
+Fri Nov  6 23:12:32.051 [initandlisten] options: {}
+Fri Nov  6 23:12:32.051 [initandlisten] exception in initAndListen: 10310 Unable to lock file: /data/db/mongod.lock. Is a mongod instance already running?, terminating
+Fri Nov  6 23:12:32.051 dbexit: 
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: going to close listening sockets...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: going to flush diaglog...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: going to close sockets...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: waiting for fs preallocator...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: lock for final commit...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: final commit...
+Fri Nov  6 23:12:32.051 [initandlisten] shutdown: closing all files...
+Fri Nov  6 23:12:32.051 [initandlisten] closeAllFiles() finished
+Fri Nov  6 23:12:32.051 dbexit: really exiting now
+/usr/local/mongodb/mongodir/bin/mongod --help for help and startup options
+Fri Nov  6 23:13:31.398 [initandlisten] MongoDB starting : pid=10538 port=27017 dbpath=/data/db/ 64-bit host=appledeMacBook-Pro.local
+Fri Nov  6 23:13:31.398 [initandlisten] 
+Fri Nov  6 23:13:31.398 [initandlisten] ** WARNING: soft rlimits too low. Number of files is 256, should be at least 1000
+Fri Nov  6 23:13:31.398 [initandlisten] db version v2.4.6
+Fri Nov  6 23:13:31.398 [initandlisten] git version: b9925db5eac369d77a3a5f5d98a145eaaacd9673
+Fri Nov  6 23:13:31.398 [initandlisten] build info: Darwin bs-osx-106-x86-64-2.10gen.cc 10.8.0 Darwin Kernel Version 10.8.0: Tue Jun  7 16:32:41 PDT 2011; root:xnu-1504.15.3~1/RELEASE_X86_64 x86_64 BOOST_LIB_VERSION=1_49
+Fri Nov  6 23:13:31.398 [initandlisten] allocator: system
+Fri Nov  6 23:13:31.398 [initandlisten] options: {}
+Fri Nov  6 23:13:31.403 [initandlisten] journal dir=/data/db/journal
+Fri Nov  6 23:13:31.403 [initandlisten] recover : no journal files present, no recovery needed
+Fri Nov  6 23:13:31.421 [websvr] admin web console waiting for connections on port 28017
+Fri Nov  6 23:13:31.421 [initandlisten] waiting for connections on port 27017
