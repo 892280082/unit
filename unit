@@ -115,7 +115,8 @@ function Dispather()
            echo "stop something" 
          ;; 
         --list) 
-           echo -e "参数------------------- 方法作用\n"
+           echo -e "版本------------------- 1.12"
+           echo -e "参数------------------- 方法作用"
            echo -e "initMac--------------- mac客户端初始化"
            echo -e "ssh------------------- ssh连接工具"
            echo -e "rssh------------------ ssh反向代理工具"
